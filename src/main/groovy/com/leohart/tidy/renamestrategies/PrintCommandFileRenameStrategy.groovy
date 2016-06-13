@@ -1,14 +1,17 @@
 package com.leohart.tidy.renamestrategies
 
-import java.io.File
-
-import com.leohart.tidy.FileRenameStrategy;;
+import com.google.inject.Inject
+import com.leohart.tidy.FileRenameStrategy
 
 class PrintCommandFileRenameStrategy implements FileRenameStrategy{
+	
+	@Inject
+	RenameCommandGenerator renameCommandGenerator;
 
 	@Override
 	public void rename(File file, String newName) {
-		println "mv \"${file}\" \"${file.getParent()}\\${newName}\"";
+		String newFilePath = "${file.getParent()}\\${newName}S";
+		println this.renameCommandGenerator.generateRenameCommand(file.toString(), newFilePath);
 	}
 
 }

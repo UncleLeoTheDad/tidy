@@ -13,7 +13,7 @@ class TidyMain {
 	static main(args) {
 		OptionAccessor options = parseCommandLine(args);
 		
-		Injector injector = Guice.createInjector(new TidyModule())
+		Injector injector = Guice.createInjector(new TidyModule(options))
 		FileRenamer fileRenamer = injector.getInstance(FileRenamer);
 
 		new File(options.arguments()[0]).eachFile { File file ->
@@ -28,7 +28,8 @@ class TidyMain {
 
 	private static OptionAccessor parseCommandLine(args){
 		CliBuilder cli = new CliBuilder(usage:'tidy <path>')
-		cli.p(longOpt:'print', args:1, argName:'PRINT', "Print command.  Don't tidy");
+		cli.p(longOpt:'print', args:1, argName:'PRINT', "Print rename command.");
+		cli.r(longOpt:'rename', args:1, argName:'RENAME', "Rename file.");
 
 		def options = cli.parse(args)
 
